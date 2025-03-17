@@ -1,22 +1,21 @@
 #include <iostream>
 #include <cmath>
+#include <limits>
+#include <cstdlib>
 
-using namespace std;
 
 char* right(char* str,int n){
-    int i, len, k;
-    char ans[100];
+    int i, len;
     while (str[i] != '\0'){
         i++;
     }
     len = i;
-    k = 1;
-    ans[n] = '\0';
-    for (i = len-1;i>len-1-n;i--){
-        ans[n-k] = str[i];
-        k++;
+    if (len < n){
+        return str;
+    } else {
+        return &str[len-n];
     }
-    return ans;
+    
 }
 
 unsigned long right(unsigned long num,int n){
@@ -32,21 +31,52 @@ unsigned long right(unsigned long num,int n){
 
 
 int main(){
-    string name[10];
+    char name[10];
     char astr[101];
     unsigned long anum;
-    int n;
-    cin >> name;
-    printf("%s",name);
-    printf("%d","number\n"==name);
-    if (name == "number\n"){
-        scanf("%lu\n%i",&anum,&n);
-        printf("%lu %i",anum,n);
-        printf("%lu",right(anum,n));
+    int n,f_n=1,f_s=1;
+    std::cin >> name;
 
-    } else {
-        fgets(astr,sizeof(astr),stdin);
-        scanf("%d",&n);
-        printf("%s",right(astr,n));
-    };
+    for (int i = 0;i<8;i++){
+        if (name[i] == '\0'){
+            // std::cout << "break" << std::endl;
+            break;
+        }
+        if ((f_s == 0 && f_n == 0) || i == 7){
+            f_s = 0;
+            f_n =0;
+            // std::cout << "break" << std::endl;
+            break;
+        }
+        if (name[i] != "string"[i]){
+            f_s = 0;
+            // std::cout << "not_s " << i << ' ' << name[i] << "string"[i] << std::endl; 
+        }
+        if (name[i] != "number"[i]){
+            
+            // std::cout << "not_n " << i << ' ' << name[i] << "string"[i] << std::endl;
+            f_n = 0;
+            // std::cout << "wtf: " << name[i] << std::endl;
+        }
+    }
+    if (f_n){
+        // std::cout << "print anum: ";
+        std::cin >> anum;
+        // std::cout << "anum: " << anum << std::endl;
+        if (!(std::cin >> n)) {
+            std::cout << "" << std::endl;
+        }
+        std::cout << right(anum,n);
+
+    } else if (f_s){
+        std::cin >> astr;
+        if (!(std::cin >> n)) {
+            std::cout << "" << std::endl;
+        }
+        std::cout << right(astr,n) << std::endl;
+    } else{
+        std::cin >> astr;
+        std::cin >> n;
+        std::cout << 0 << std::endl;
+    }
 }
