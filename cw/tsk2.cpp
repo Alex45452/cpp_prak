@@ -5,7 +5,7 @@ class Vec{
     int len;
     double *v;
 public:
-    Vec(int n);
+    explicit Vec(int n);
     Vec(int n, double* ptr);
     Vec(const Vec &nv);
     ~Vec(){
