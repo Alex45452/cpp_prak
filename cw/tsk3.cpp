@@ -19,7 +19,7 @@ class Vec{
         Vec operator+(const Vec op2) const;
         Vec operator-(const Vec op2) const;
         Vec operator*(const double op2) const;
-        Vec operator=(const Vec& op2);
+        Vec& operator=(const Vec& op2);
         bool operator==(const Vec op2) const;
         double& operator[](const int n);
 
@@ -118,8 +118,8 @@ Vec Vec::operator*(const double op2) const{
     return res;
 }
 
-Vec Vec::operator=(const Vec& op2){
-    if (*this == op2){
+Vec& Vec::operator=(const Vec& op2){
+    if (this == &op2){
         return *this;
     }
     len = op2.len;

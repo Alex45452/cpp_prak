@@ -169,3 +169,12 @@ void mstring::replace(const char* sub_str, const char *new_str)
     
 
 } // замена подстроки sub_str на new_str,
+
+int main()
+{
+    mstring s("Washingston");
+    s.del(0,3);
+    s.print();
+    s.del(3,5);
+    s.print();
+}

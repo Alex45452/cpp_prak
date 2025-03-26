@@ -2,7 +2,12 @@
 #include <cmath>
 #include <cstring>
 
+
 using namespace std;
+
+enum {NAME_LEN=10};
+enum {SMAXLEN=101};
+
 
 char* right(char* str,const int n){
     int i = 0, len;
@@ -32,8 +37,8 @@ unsigned long right(unsigned long num,const int n){
 
 
 int main(){
-    char name[10];
-    char astr[101];
+    char name[NAME_LEN];
+    char astr[SMAXLEN];
     unsigned long anum;
     int n;
     cin.getline(name,10);
