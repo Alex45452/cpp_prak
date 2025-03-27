@@ -118,17 +118,20 @@ void mstring::del(const int pos)
 void mstring::del(const int s_pos,const int e_pos)
 {
     char *buf;
-    if (s_pos > _length) return;
-    if (e_pos > _length)
+    if (s_pos > _length) {return;}
+    if (e_pos >= _length-1)
     {
         buf = new char[s_pos+1];
+        buf[0] = '\0';
         strncat(buf,_string,s_pos);
-        _length -= s_pos+1;
+        buf[s_pos] = '\0';
+        _length = s_pos;
     } else {
-        buf = new char[_length-(e_pos-s_pos)+1];
+        buf = new char[_length-(e_pos-s_pos)-1];
         strncpy(buf,_string,s_pos);
+        buf[s_pos] = '\0';
         strcat(buf,&_string[e_pos+1]);
-        _length -= _length-e_pos+s_pos+1;
+        _length = _length-e_pos+s_pos-1;
     }
     delete [] _string;
     _string = buf;
@@ -170,11 +173,3 @@ void mstring::replace(const char* sub_str, const char *new_str)
 
 } // замена подстроки sub_str на new_str,
 
-int main()
-{
-    mstring s("Washingston");
-    s.del(0,3);
-    s.print();
-    s.del(3,5);
-    s.print();
-}
