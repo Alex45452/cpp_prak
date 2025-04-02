@@ -169,3 +169,15 @@ Vec operator*(const double op1, const Vec &op2)
     }
     return res;
 }
+void error();
+
+int main()
+{
+    try
+    {
+        error();
+    }
+    catch( ) {}
+      
+    return 0;
+}  

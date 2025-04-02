@@ -39,8 +39,8 @@ class mstring{
         char& operator[](const int op2){return _string[op2];}
         
         friend ostream& operator<<(ostream& os,const mstring op2);
-        friend ostream& operator>>(ostream& os,mstring op2);
-        friend mstring operator+(const char op1,const mstring op2);
+        friend istream& operator>>(istream& is,mstring& op2);
+        friend mstring operator+(const char* op1,const mstring op2);
         friend mstring operator*(const unsigned int& op1,const mstring op2) {return op2*op1;}
 
 };
@@ -209,7 +209,7 @@ mstring mstring::operator+(const char op2) const{
 mstring mstring::operator*(const unsigned int op2) const
 {
     mstring res;
-    for (int i = 0; i < op2; i++){
+    for (unsigned int i = 0; i < op2; i++){
         res.add(_string);
     }
     return res;
@@ -227,9 +227,7 @@ mstring& mstring::operator=(const mstring op2)
 bool mstring::operator>(const mstring op2) const
 {
     unsigned int i = 0;
-    if (_length > op2._length) return true;
-    if (_length < op2._length) return false;
-    while (_string[i] == op2._string[i])
+    while (_string[i] == op2._string[i] && _string[i] != '\0')
         i++;
     return _string[i] > op2._string[i];
     
@@ -237,8 +235,6 @@ bool mstring::operator>(const mstring op2) const
 bool mstring::operator<(const mstring op2) const
 {
     unsigned int i = 0;
-    if (_length < op2._length) return true;
-    if (_length > op2._length) return false;
     while (_string[i] == op2._string[i] && _string[i] != '\0') 
     // если op2._string[i] == \0, то цикл завершится в любом случае
         i++;
@@ -299,7 +295,7 @@ istream& operator>>(istream& is,mstring& op2)
 }
 
 mstring operator+(const char* op1,const mstring op2){
-    mstring res(op2);
-    res.insert(op1,0);
+    mstring res(op1);
+    res.add(op2._string);
     return res;
 }

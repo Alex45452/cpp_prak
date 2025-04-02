@@ -1,10 +1,11 @@
 #include <iostream>
-#include <list>
+#include <list> 
 
 using namespace std;
 
 void search(list<int> lst,int num)
 {
+
 }
 void add_to_st()
 {
