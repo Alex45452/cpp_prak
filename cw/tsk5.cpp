@@ -1,38 +1,69 @@
 #include <iostream>
+#include <cstring>
 #include <cmath>
 
+class VecException{
+    char* comment;
+    int fstlen;
+    int sndlen;
+    int type; // тип 0 - 0 операторов, тип 1 - 1 оператор, тип 2 - 2 оператора;
+public:
+    VecException(const char* cmt,const int t, const int ft, const int sd);
+    VecException(const VecException &ex);
+    ~VecException(){delete [] comment;}
+    const char* getcomm() const {return comment;}
+    const int getfst() const {return fstlen;}
+    const int getsnd() const {return sndlen;}
+    const int gettype() const {return type;}
+};
+
 class Vec{
-        int len;
-        double *v;
-    public:
-        explicit Vec(const int n);
-        Vec(const int n, double* const ptr);
-        Vec(const Vec &nv);
-        ~Vec();
-        void set(const double arg, const int coord);
-        double get(const int coord) const;
-        double euc_norm() const;
-        double max_norm() const;
-        void print() const;
+    int len;
+    double *v;
+public:
+    explicit Vec(const int n);
+    Vec(const int n, double* const ptr);
+    Vec(const Vec &nv);
+    ~Vec();
+    void set(const double arg, const int coord);
+    double get(const int coord) const;
+    double euc_norm() const;
+    double max_norm() const;
+    void print() const;
 
 
-        Vec operator+(const Vec op2) const;
-        Vec operator-(const Vec op2) const;
-        Vec operator*(const double op2) const;
-        Vec& operator=(const Vec& op2);
-        bool operator==(const Vec op2) const;
-        double& operator[](const int n);
+    Vec operator+(const Vec op2) const;
+    Vec operator-(const Vec op2) const;
+    Vec operator*(const double op2) const;
+    Vec& operator=(const Vec& op2);
+    bool operator==(const Vec op2) const;
+    double& operator[](const int n);
 
-        
-        friend std::ostream& operator<<(std::ostream& os, const Vec& op2);
-        friend Vec operator*(const double op1, const Vec& op2);
-        // friend Vec operator*(const Vec& op1, double& op2);
+    
+    friend std::ostream& operator<<(std::ostream& os, const Vec& op2);
+    friend Vec operator*(const double op1, const Vec& op2);
+    // friend Vec operator*(const Vec& op1, double& op2);
 
 };
 
+VecException::VecException(const char* cmt, const int t, const int ft = 0, const int sd = 0){
+    comment = new char [strlen(cmt)];
+    strcpy(comment,cmt);
+    fstlen = ft;
+    sndlen = sd;
+    type = t;
+}
+VecException::VecException(const VecException &ex){
+    comment = new char [strlen(ex.comment)];
+    strcpy(comment,ex.comment);
+    type = ex.type;
+    fstlen = ex.fstlen;
+    sndlen = ex.fstlen;
+}
+
 Vec::Vec(const int n,double* const ptr){
     if (n < 1){
-        throw "length error";
+        throw VecException("length error", 0);
     }
     len = n;
     v = new double[n];
@@ -42,7 +73,7 @@ Vec::Vec(const int n,double* const ptr){
 }
 Vec::Vec(const int n){
     if (n < 1){
-        throw "length error";
+        throw VecException("length error", 0);
     }
     len = n;
     v = new double[n];
@@ -64,14 +95,14 @@ Vec::~Vec(){
 
 void Vec::set(const double arg, const int coord){
     if (coord>=len || coord < 0){
-        throw "coordinate error in set()";
+        throw VecException("coordinate error in set()", 0);
     }
     v[coord] = arg;
 }
 
 double Vec::get(const int coord) const{
     if (coord>=len || coord < 0){
-        throw "coordinate error in get()";
+        throw VecException("coordinate error in get()", 0);
     }
     return v[coord];
 }
@@ -102,6 +133,9 @@ void Vec::print() const{
 
 Vec Vec::operator+(const Vec op2) const{
     Vec res(len);
+    if (op2.len != len){
+        throw VecException("addition of vectors of different lengths:",2,len,op2.len);
+    }
     for (int i = 0; i < len; i++){
         res.set(op2.v[i]+v[i],i);
     }
@@ -110,6 +144,9 @@ Vec Vec::operator+(const Vec op2) const{
 
 Vec Vec::operator-(const Vec op2) const{
     Vec res(len);
+    if (op2.len != len){
+        throw VecException("subtraction of vectors of different lengths:",2,len,op2.len);
+    }
     for (int i = 0; i < len; i++){
         res.set(v[i]-op2.v[i],i);
     }
@@ -150,6 +187,9 @@ bool Vec::operator==(const Vec op2) const{
 }
 
 double& Vec::operator[](const int n){
+    if (n>=len || n < 0){
+        throw VecException("incorrect indexing:",1,n);
+    }
     return v[n];
 }
 
@@ -182,10 +222,15 @@ int main()
     {
         error();
     }
-    catch(const char* err) 
+    catch(const VecException &ex)
     {
-        fprintf(stderr,"Exception: ");
-        fprintf(stderr,"%s", err);
+        fprintf(stderr,"Exception: %s",ex.getcomm());
+        if (ex.gettype() == 1){
+            fprintf(stderr," %d", ex.getfst());
+        } else if (ex.gettype() == 2){
+            fprintf(stderr," %d %d", ex.getfst(), ex.getsnd());
+        }
+        // fprintf(stderr,"\n");
     }
     catch (...)
     {

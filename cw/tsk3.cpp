@@ -5,7 +5,7 @@ class Vec{
         int len;
         double *v;
     public:
-        Vec(const int n);
+        explicit Vec(const int n);
         Vec(const int n, double* const ptr);
         Vec(const Vec &nv);
         ~Vec();
@@ -71,7 +71,7 @@ double Vec::get(const int coord) const{
 }
 
 double Vec::euc_norm() const{
-    double res;
+    double res = 0;
     for(int i =0;i<len;i++){
         res += v[i]*v[i];
     }
