@@ -23,4 +23,3 @@ const char* maxn(const char** str,int len){
     } 
     return str[mx_pos];
 }
-
