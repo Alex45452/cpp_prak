@@ -5,24 +5,24 @@ using namespace std;
 
 class Flower
 {
-    private:
-        int petal;
-        int color; // 0 - белый 1 - розовый
-        static int total_petals;
-        static int pink_cnt;
-        static int white_cnt;
-    public:
-        Flower(const char* color, const int petal_num);
-        Flower();
-        ~Flower();
-        static void Print_flowers();
+    int petal;
+    int color; // 0 - белый 1 - розовый
+    // static int total_petals;
+    static int pink_cnt;
+    static int white_cnt;
+public:
+    Flower(const char* color, const int petal_num);
+    Flower();
+    ~Flower();
+    static void Print_flowers();
 };
-int Flower::total_petals = 0;
+// int Flower::total_petals = 0;
 int Flower::pink_cnt = 0;
 int Flower::white_cnt = 0;
 
 Flower::Flower()
 {
+    petal = 10;
     if (pink_cnt < white_cnt)
     {
         color = 1;
@@ -30,7 +30,8 @@ Flower::Flower()
     } 
     else if (pink_cnt == white_cnt)
     {
-        if (total_petals % 2)
+        // if (total_petals % 2)
+        if (petal % 2)
         {
             color = 0;
             white_cnt += 1;   
@@ -46,13 +47,13 @@ Flower::Flower()
         color = 0;
         white_cnt += 1;   
     } 
-    petal = 10;
-    total_petals += 10;
+    // total_petals += 10;
     
 }
 
 Flower::Flower(const char* clr , const int petal_num = 10)
 {
+    petal = petal_num;
     if (strcmp(clr,"white") == 0)
     {
         color = 0;
@@ -70,7 +71,8 @@ Flower::Flower(const char* clr , const int petal_num = 10)
         } 
         else if (pink_cnt == white_cnt)
         {
-            if (total_petals % 2)
+            // if (total_petals % 2)
+            if (petal % 2)
             {
                 color = 0;
                 white_cnt += 1;   
@@ -87,8 +89,7 @@ Flower::Flower(const char* clr , const int petal_num = 10)
             white_cnt += 1;   
         } 
     }
-    petal = petal_num;
-    total_petals += petal_num;
+    // total_petals += petal_num;
 }
 
 
@@ -99,7 +100,7 @@ Flower::~Flower()
     } else {
         white_cnt -=1;
     }
-    total_petals -= petal;
+    // total_petals -= petal;
 }
 
 void Flower::Print_flowers()

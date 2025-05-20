@@ -45,7 +45,7 @@ event::event(const char* sub, int y, int m, int d){
 }
 
 void event::print_res(){
-    cout << ' ' << subject << ' ' << year << ' ' << month << ' ' << day << endl;
+    cout << subject << ' ' << year << ' ' << month << ' ' << day << endl;
 }
 
 void event::change_date(int ny, int nm, int nd){
@@ -55,9 +55,9 @@ void event::change_date(int ny, int nm, int nd){
 }
 
 void test::print_res(){
-    cout << ' ' << subject << ' ' << year << ' ' << month << ' ' << day << ' ' << (result ? "true" : "false") << endl;
+    cout << subject << ' ' << year << ' ' << month << ' ' << day << ' ' << (result ? "true" : "false") << endl;
 }
 
 void exam::print_res(){
-    cout << ' ' << subject << ' ' << year << ' ' << month << ' ' << day << ' ' << "Grade" << ' ' << grade << endl;
+    cout << subject << ' ' << year << ' ' << month << ' ' << day << ' ' << "Grade" << ' ' << grade << endl;
 }

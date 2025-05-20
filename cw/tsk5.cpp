@@ -32,11 +32,11 @@ public:
     void print() const;
 
 
-    Vec operator+(const Vec op2) const;
-    Vec operator-(const Vec op2) const;
+    Vec operator+(Vec op2) const;
+    Vec operator-(Vec op2) const;
     Vec operator*(const double op2) const;
     Vec& operator=(const Vec& op2);
-    bool operator==(const Vec op2) const;
+    bool operator==(Vec op2) const;
     double& operator[](const int n);
 
     
@@ -215,6 +215,8 @@ Vec operator*(const double op1, const Vec &op2)
     }
     return res;
 }
+
+void error();
 
 int main()
 {
