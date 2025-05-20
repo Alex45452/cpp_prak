@@ -14,7 +14,7 @@ T maxn(T *arr,const int len){
 
 template <>
 const char* maxn(const char** str,int len){
-    int mx_len = strlen(str[0]), cur_len, mx_pos;
+    int mx_len = strlen(str[0]), cur_len, mx_pos = 0;
     for(int i = 0; i < len;i++){
         cur_len = strlen(str[i]);
         if (mx_len < cur_len){

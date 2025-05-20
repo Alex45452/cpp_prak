@@ -4,7 +4,6 @@
 using namespace std;
 
 class event{
-protected:
     char* subject;
     int day;
     int month;
@@ -12,7 +11,7 @@ protected:
 public:
     event(const char* sub, int y, int m, int d);
     virtual ~event(){delete [] subject;}
-    virtual void print_res();
+    virtual void print_res() const;
     void change_date(int ny, int nm, int nd);
     virtual void change_grade(int ng) = 0;
 };
@@ -23,7 +22,7 @@ public:
     test(const char* sub, int y, int m, int d, bool g): event(sub, y, m ,d), result(g) {}
     test(const char* sub, int y, int m, int d, int g): event(sub, y, m ,d) {g < 3 ? result = false : result = true;}
 
-    virtual void print_res();
+    virtual void print_res() const;
     virtual void change_grade(bool ng){result=ng;}
     virtual void change_grade(int ng){ng < 3 ? result = false : result = true;}
 };
@@ -32,7 +31,7 @@ class exam: public event{
     int grade;
 public:
     exam(const char* sub, int y, int m, int d, int g): event(sub,y,m,d), grade(g){}
-    virtual void print_res();
+    virtual void print_res() const;
     virtual void change_grade(int ng){grade=ng;}
 };
 
@@ -44,8 +43,8 @@ event::event(const char* sub, int y, int m, int d){
     year = y;
 }
 
-void event::print_res(){
-    cout << subject << ' ' << year << ' ' << month << ' ' << day << endl;
+void event::print_res() const{
+    cout << subject << ' ' << year << ' ' << month << ' ' << day;
 }
 
 void event::change_date(int ny, int nm, int nd){
@@ -54,10 +53,12 @@ void event::change_date(int ny, int nm, int nd){
     day = nd;
 }
 
-void test::print_res(){
-    cout << subject << ' ' << year << ' ' << month << ' ' << day << ' ' << (result ? "true" : "false") << endl;
+void test::print_res() const{
+    event::print_res();
+    cout << ' ' << (result ? "true" : "false") << endl;
 }
 
-void exam::print_res(){
-    cout << subject << ' ' << year << ' ' << month << ' ' << day << ' ' << "Grade" << ' ' << grade << endl;
+void exam::print_res() const{
+    event::print_res();
+    cout << ' ' << "Grade" << ' ' << grade << endl;
 }
