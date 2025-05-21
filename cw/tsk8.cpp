@@ -46,13 +46,13 @@ public:
     // void print() const;
 
 
-    Vec<T_type> operator+(const Vec<T_type> op2) const;
-    Vec<T_type> operator-(const Vec<T_type> op2) const;
+    Vec<T_type> operator+(Vec<T_type> op2) const;
+    Vec<T_type> operator-(Vec<T_type> op2) const;
     Vec<T_type> operator*(const T_type op2) const;
-    T_type operator^(const Vec<T_type> op2) const;
+    T_type operator^(Vec<T_type> op2) const;
     Vec<T_type>& operator=(const Vec<T_type>& op2);
-    Vec<T_type>& operator+=(const Vec<T_type> op2);
-    bool operator==(const Vec<T_type> op2) const;
+    Vec<T_type>& operator+=(Vec<T_type> op2);
+    bool operator==(Vec<T_type> op2) const;
     T_type& operator[](const int n);
     // friend Vec operator*(const Vec& op1, T_type& op2);
 

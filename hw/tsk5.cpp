@@ -1,150 +1,137 @@
 #include <iostream>
+#include <cstdio>
 #include <string>
+#include <cstdlib>
 #include <cmath>
-#include <memory>
-#include <vector>
-#include <cctype>
 
 using namespace std;
 
-// Абстрактный класс Figure
-class Figure {
-public:
-    virtual ~Figure() = default;
-    virtual bool move(int startX, int startY, int targetX, int targetY) const = 0;
+struct MoveSheet{
+    char name;
+    int x1,y1;
+    int x2,y2;
 };
 
-// Классы для конкретных фигур
-class King : public Figure {
+class Figure{
 public:
-    bool move(int startX, int startY, int targetX, int targetY) const override {
-        int dx = abs(targetX - startX);
-        int dy = abs(targetY - startY);
-        return (dx <= 1 && dy <= 1);
-    }
+    virtual bool move(int x1,int y1,int x2,int y2) const = 0;
 };
 
-class Queen : public Figure {
+class Knight: public Figure{
 public:
-    bool move(int startX, int startY, int targetX, int targetY) const override {
-        int dx = abs(targetX - startX);
-        int dy = abs(targetY - startY);
-        return (dx == dy) || (startX == targetX || startY == targetY);
-    }
+    virtual bool move(int x1,int y1,int x2,int y2) const;
 };
 
-class Rook : public Figure {
+class King: public Figure{
 public:
-    bool move(int startX, int startY, int targetX, int targetY) const override {
-        return (startX == targetX || startY == targetY);
-    }
+    virtual bool move(int x1,int y1,int x2,int y2) const;
 };
 
-class Bishop : public Figure {
+class Queen: public Figure{
 public:
-    bool move(int startX, int startY, int targetX, int targetY) const override {
-        int dx = abs(targetX - startX);
-        int dy = abs(targetY - startY);
-        return (dx == dy);
-    }
+    virtual bool move(int x1,int y1,int x2,int y2) const;
 };
 
-class Knight : public Figure {
+class Bishop: public Figure{
 public:
-    bool move(int startX, int startY, int targetX, int targetY) const override {
-        int dx = abs(targetX - startX);
-        int dy = abs(targetY - startY);
-        return (dx == 1 && dy == 2) || (dx == 2 && dy == 1);
-    }
+    virtual bool move(int x1,int y1,int x2,int y2) const;
 };
 
-// Класс Parser для разбора входных данных
-class Parser {
+class Rook: public Figure{
 public:
-    static bool parse(const string& input, char& piece, int& startX, int& startY, int& targetX, int& targetY) {
-        if (input.length() < 5) return false;
-        
-        piece = toupper(input[0]);
-        if (piece != 'K' && piece != 'Q' && piece != 'R' && piece != 'B' && piece != 'N') {
-            return false;
-        }
-        
-        if (input[1] != ' ') return false;
-        
-        if (!isalpha(input[2]) || !isdigit(input[3])) return false;
-        startX = tolower(input[2]) - 'a';
-        startY = input[3] - '1';
-        
-        if (input[4] != ' ') return false;
-        
-        if (!isalpha(input[5]) || !isdigit(input[6])) return false;
-        targetX = tolower(input[5]) - 'a';
-        targetY = input[6] - '1';
-        
-        // Проверка, что координаты в пределах доски
-        if (startX < 0 || startX > 7 || startY < 0 || startY > 7 ||
-            targetX < 0 || targetX > 7 || targetY < 0 || targetY > 7) {
-            return false;
-        }
-        
-        return true;
-    }
+    virtual bool move(int x1,int y1,int x2,int y2) const;
 };
 
-// Основной класс ChessChecker
-class ChessChecker {
-private:
-    vector<unique_ptr<Figure>> figures;
-    
-public:
-    ChessChecker() {
-        // Инициализация фигур
-        figures['K' - 'K'] = make_unique<King>();
-        figures['Q' - 'K'] = make_unique<Queen>();
-        figures['R' - 'K'] = make_unique<Rook>();
-        figures['B' - 'K'] = make_unique<Bishop>();
-        figures['N' - 'K'] = make_unique<Knight>();
-    }
-    
-    string checkMove(const string& input) {
-        char piece;
-        int startX, startY, targetX, targetY;
-        
-        if (!Parser::parse(input, piece, startX, startY, targetX, targetY)) {
-            return "NO";
-        }
-        
-        // Проверка, что начальная и целевая клетки разные
-        if (startX == targetX && startY == targetY) {
-            return "NO";
-        }
-        
-        // Получаем соответствующую фигуру
-        int index;
-        switch(piece) {
-            case 'K': index = 0; break;
-            case 'Q': index = 1; break;
-            case 'R': index = 2; break;
-            case 'B': index = 3; break;
-            case 'N': index = 4; break;
-            default: return "NO";
-        }
-        
-        if (figures[index]->move(startX, startY, targetX, targetY)) {
-            return "YES";
-        } else {
-            return "NO";
+bool King::move(int x1,int y1,int x2,int y2) const{
+    if (x2 <= 8 && x2 >= 1 && y2 <= 8 && y2 >= 1){
+        if (x1 <= 8 && x1 >= 1 && y1 >= 1 && y1 <= 8){
+            return (abs(x1-x2) <= 1 && abs(y1-y2) <=1 && (y1 != y2 || x1 != x2));
         }
     }
+}
+bool Knight::move(int x1,int y1,int x2,int y2) const{
+    if (x2 <= 8 && x2 >= 1 && y2 <= 8 && y2 >= 1){
+        if (x1 <= 8 && x1 >= 1 && y1 >= 1 && y1 <= 8){
+            return (abs(x1-x2) == 2 && abs(y1-y2) == 1)||(abs(x1-x2) == 1 && abs(y1-y2) == 2);
+        }
+    }
+}
+bool Queen::move(int x1,int y1,int x2,int y2) const{
+    if (x2 <= 8 && x2 >= 1 && y2 <= 8 && y2 >= 1){
+        if (x1 <= 8 && x1 >= 1 && y1 >= 1 && y1 <= 8){
+            return ((x1==x2 || y1==y2)||(abs(x1-x2) == abs(y1-y2)))&&(x1 != x2 || y1 != y2);
+        }
+    }
+}
+bool Bishop::move(int x1,int y1,int x2,int y2) const{
+    if (x2 <= 8 && x2 >= 1 && y2 <= 8 && y2 >= 1){
+        if (x1 <= 8 && x1 >= 1 && y1 >= 1 && y1 <= 8){
+            return (abs(x1-x2) == abs(y1-y2))&& (x1 != x2 || y1 != y2);
+        }
+    }
+}
+bool Rook::move(int x1,int y1,int x2,int y2) const{
+    if (x2 <= 8 && x2 >= 1 && y2 <= 8 && y2 >= 1){
+        if (x1 <= 8 && x1 >= 1 && y1 >= 1 && y1 <= 8){
+            return (x1==x2 || y1==y2)&&(x1 != x2 || y1 != y2);
+        }
+    }
+}
+
+
+
+class Parser{
+public:
+    MoveSheet parse(const string str){
+        MoveSheet res;
+        res.name = str[0];
+        res.x1 = (int)(str[2]-'a');
+        res.y1 = (int)(str[3]-'1');
+        res.x2 = (int)(str[5]-'a');
+        res.y2 = (int)(str[6]-'1');
+        return res;
+    }
 };
 
-int main() {
+class ChessChecker{
+    Figure* pieces;
+public:
+    bool check_move(const string line);
+};
+
+bool ChessChecker::check_move(const string line){
+    Parser parser;
+    MoveSheet move;
+    move = parser.parse(line);
+    switch (move.name)
+    {
+    case 'Q':
+        Queen q;
+        return q.move(move.x1,move.y1,move.x2,move.y2);
+    case 'K':
+        King k;
+        return k.move(move.x1,move.y1,move.x2,move.y2);
+    case 'N':
+        Knight n;
+        return n.move(move.x1,move.y1,move.x2,move.y2);
+    case 'B':
+        Bishop b;
+        return b.move(move.x1,move.y1,move.x2,move.y2);
+    case 'R':
+        Rook r;
+        return r.move(move.x1,move.y1,move.x2,move.y2);
+    default:
+    }
+}
+
+int main(){
+    string query;
     ChessChecker checker;
-    string input;
-    
-    cin >> input;
-    
-    cout << checker.checkMove(input) << endl;
-    
-    return 0;
+    getline(cin,query);
+    if (checker.check_move(query)){
+        cout << "YES" << endl;
+    } else {
+        cout << "NO" << endl;
+    }
+
 }

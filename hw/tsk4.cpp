@@ -157,7 +157,7 @@ void mstring::insert(const char* c,const int pos)
 void mstring::del(const int pos)
 {
     char *buf;
-    if (pos > _length || pos < 0){
+    if (pos >= _length || pos < 0){
         throw mstringException("del",1,pos);
     }
     buf = new char[_length];
@@ -167,13 +167,17 @@ void mstring::del(const int pos)
     delete [] _string;
     _string = buf;
 }              // i - позиция
+
 void mstring::del(const int s_pos,const int e_pos)
 {
-    char *buf;\
-    if (s_pos > _length || s_pos < 0){
+    char *buf;
+    if (s_pos >= _length || s_pos < 0){
         throw mstringException("del",2,s_pos,e_pos);
     }
     if (e_pos < 0 || e_pos >= _length){
+        throw mstringException("del",2,s_pos,e_pos);
+    }
+    if (e_pos < s_pos){
         throw mstringException("del",2,s_pos,e_pos);
     }
     if (e_pos >= _length-1)
@@ -300,7 +304,7 @@ bool mstring::operator==(const mstring op2) const
 
 char& mstring::operator[](const int op2){
     if (op2 < 0 || op2 >= _length){
-        throw mstringException("operator[]",2,op2);
+        throw mstringException("operator[]",1,op2);
     }
     return _string[op2];
 }
@@ -350,7 +354,11 @@ mstring operator*(const int& op1,const mstring op2){
     if (op1 < 0){
         throw mstringException("operator*",1,op1);
     } 
-    return op2*op1;
+    mstring res;
+    for (unsigned int i = 0; i < op1; i++){
+        res.add(op2._string);
+    }
+    return res;
 }
 
 void error();
