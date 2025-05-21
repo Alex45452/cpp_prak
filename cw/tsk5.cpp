@@ -32,11 +32,11 @@ public:
     void print() const;
 
 
-    Vec operator+(Vec op2) const;
-    Vec operator-(Vec op2) const;
+    Vec operator+(const Vec& op2) const;
+    Vec operator-(const Vec& op2) const;
     Vec operator*(const double op2) const;
     Vec& operator=(const Vec& op2);
-    bool operator==(Vec op2) const;
+    bool operator==(const Vec& op2) const;
     double& operator[](const int n);
 
     
@@ -131,7 +131,7 @@ void Vec::print() const{
     std::cout << v[len-1] << ')' << std::endl;
 }
 
-Vec Vec::operator+(const Vec op2) const{
+Vec Vec::operator+(const Vec& op2) const{
     Vec res(len);
     if (op2.len != len){
         throw VecException("addition of vectors of different lengths:",2,len,op2.len);
@@ -142,7 +142,7 @@ Vec Vec::operator+(const Vec op2) const{
     return res;
 }
 
-Vec Vec::operator-(const Vec op2) const{
+Vec Vec::operator-(const Vec& op2) const{
     Vec res(len);
     if (op2.len != len){
         throw VecException("subtraction of vectors of different lengths:",2,len,op2.len);
@@ -174,7 +174,7 @@ Vec& Vec::operator=(const Vec& op2){
     return *this;
 }
 
-bool Vec::operator==(const Vec op2) const{
+bool Vec::operator==(const Vec& op2) const{
     if (len!=op2.len){
         return false;
     }
