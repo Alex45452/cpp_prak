@@ -12,6 +12,7 @@ public:
     Set();
     Set(T_Type* a, int cnt);
     Set(const Set &set);
+    ~Set();
     Set& operator=(const Set &set);
     void add(T_Type elem);
     void add(T_Type* elems, int cnt);
@@ -20,7 +21,6 @@ public:
     void print() const;
     Set operator+(const Set& s) const;
     Set operator*(const Set& s) const;
-    ~Set();
 };
 
 template <class T_Type>
@@ -71,6 +71,9 @@ Set<T_Type>::Set(const Set &set){
 
 template <class T_Type>
 Set<T_Type>& Set<T_Type>::operator=(const Set &set){
+    if (this == &set){
+        return *this;
+    }
     delete[] lst;
     length = set.length;
     if (length > 0){

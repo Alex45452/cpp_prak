@@ -46,13 +46,13 @@ public:
     // void print() const;
 
 
-    Vec<T_type> operator+(Vec<T_type> op2) const;
-    Vec<T_type> operator-(Vec<T_type> op2) const;
+    Vec<T_type> operator+(const Vec<T_type>& op2) const;
+    Vec<T_type> operator-(const Vec<T_type>& op2) const;
     Vec<T_type> operator*(const T_type op2) const;
-    T_type operator^(Vec<T_type> op2) const;
+    T_type operator^(const Vec<T_type>& op2) const;
     Vec<T_type>& operator=(const Vec<T_type>& op2);
-    Vec<T_type>& operator+=(Vec<T_type> op2);
-    bool operator==(Vec<T_type> op2) const;
+    Vec<T_type>& operator+=(const Vec<T_type>& op2);
+    bool operator==(const Vec<T_type>& op2) const;
     T_type& operator[](const int n);
     // friend Vec operator*(const Vec& op1, T_type& op2);
 
@@ -146,7 +146,7 @@ T_type Vec<T_type>::max_norm() const{
 // }
 
 template <class T_type>
-Vec<T_type> Vec<T_type>::operator+(const Vec op2) const{
+Vec<T_type> Vec<T_type>::operator+(const Vec& op2) const{
     Vec res(len);
     if (op2.len != len){
         throw VecException("addition of vectors of different lengths:",2,len,op2.len);
@@ -158,7 +158,7 @@ Vec<T_type> Vec<T_type>::operator+(const Vec op2) const{
 }
 
 template <class T_type>
-Vec<T_type> Vec<T_type>::operator-(const Vec op2) const{
+Vec<T_type> Vec<T_type>::operator-(const Vec& op2) const{
     Vec res(len);
     if (op2.len != len){
         throw VecException("subtraction of vectors of different lengths:",2,len,op2.len);
@@ -179,7 +179,7 @@ Vec<T_type> Vec<T_type>::operator*(const T_type op2) const{
 }
 
 template <class T_type>
-T_type Vec<T_type>::operator^(const Vec<T_type> op2) const{
+T_type Vec<T_type>::operator^(const Vec<T_type>& op2) const{
     if (op2.len != len){
         throw VecException("multiplication of vectors of different lengths:",2,len,op2.len);
     }
@@ -205,7 +205,7 @@ Vec<T_type>& Vec<T_type>::operator=(const Vec<T_type>& op2){
 }
 
 template <class T_type>
-Vec<T_type>& Vec<T_type>::operator+=(const Vec<T_type> op2){
+Vec<T_type>& Vec<T_type>::operator+=(const Vec<T_type>& op2){
     if (op2.len != len){
         throw VecException("addition of vectors of different lengths:",2,len,op2.len);
     }
@@ -217,7 +217,7 @@ Vec<T_type>& Vec<T_type>::operator+=(const Vec<T_type> op2){
 }
 
 template <class T_type>
-bool Vec<T_type>::operator==(const Vec op2) const{
+bool Vec<T_type>::operator==(const Vec& op2) const{
     if (len!=op2.len){
         return false;
     }

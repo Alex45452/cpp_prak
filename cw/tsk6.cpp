@@ -8,6 +8,7 @@ class event{
     int day;
     int month;
     int year;
+    event(event& op){};
 public:
     event(const char* sub, int y, int m, int d);
     virtual ~event(){delete [] subject;}

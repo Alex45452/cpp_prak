@@ -37,7 +37,7 @@ PlayerError::PlayerError(const char *msg, const char *t)
 PlayerError::PlayerError(const char *msg, const char *t, int num)
 {
     number = num;
-    hasnumber = 
+    hasnumber = true;
     message = new char[strlen(msg) + 1];
     strcpy(message, msg);
     team = new char[strlen(t) + 1];
@@ -59,11 +59,10 @@ class Player
 
 public:
     Player(const Player &) = delete;
-    Player &operator=(const Player &) = delete;
-
     Player(const char *t, int num);
     ~Player();
-
+    
+    Player &operator=(const Player &) = delete;
     void Print() const;
     static void Print_teams();
 };
@@ -71,8 +70,7 @@ public:
 map<string, vector<int>> Player::playersInTeam;
 map<string, set<int>> Player::numsInTeam;
 
-Player::Player(const char *t, int num)
-    : team(t), number(num)
+Player::Player(const char *t, int num): team(t), number(num)
 {
     if (team != "Zenit" && team != "CSKA")
         throw PlayerError("Wrong name", t);
@@ -90,8 +88,8 @@ Player::~Player()
 {
     numsInTeam[team].erase(number);
     auto &vec = playersInTeam[team];
-    for (auto it = vec.begin(); it != vec.end(); ++it) {
-        if (*it == number) {
+    for (auto it = vec.begin(); it != vec.end(); ++it){
+        if (*it == number){
             vec.erase(it);
             break;
         }
@@ -100,18 +98,21 @@ Player::~Player()
 
 void Player::Print() const
 {
-    cout << team << ' ' << number << '\n';
+    cout << team << ' ' << number << endl;
 }
 
 void Player::Print_teams()
 {
-    for (const char *t : {"Zenit", "CSKA"}) {
-        const auto &vec = playersInTeam[t];
-        if (vec.empty()) continue;
-        cout << t << ':';
-        for (int n : vec)
+    for (const char *team : {"Zenit", "CSKA"}){
+        const auto &vec = playersInTeam[team];
+        if (vec.empty()){
+            continue;
+        }
+        cout << team << ':';
+        for (int n : vec){
             cout << ' ' << n;
-        cout << '\n';
+        }
+        cout << endl;
     }
 }
 
@@ -122,17 +123,18 @@ int main()
     try {
         test_players();
     }
-    catch (PlayerError &e) {
-        if (e.numberGiven())
-            cerr << "Exception: " << e.getMessage()
-                 << " in team " << e.getTeam()
-                 << " Error number: " << e.getNumber() << '\n';
-        else
-            cerr << "Exception: " << e.getMessage()
-                 << " in team " << e.getTeam() << '\n';
+    catch (PlayerError &e)
+    {
+        if (e.numberGiven()){
+            cerr << "Exception: " << e.getMessage() << " in team " << e.getTeam() << " Error number: " << e.getNumber() << endl;
+        }
+        else{
+            cerr << "Exception: " << e.getMessage() << " in team " << e.getTeam() << endl;
+        }
     }
-    catch (...) {
-        cerr << "Exception: unknown error\n";
+    catch (...)
+    {
+        cerr << "Exception: unknown error" << endl;
     }
     return 0;
 }
