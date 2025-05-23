@@ -159,10 +159,14 @@ void Set<T_Type>::print() const {
             }
         }
     }
-    for (int i = 0; i < length-1; i++){
-        cout << lst[i] << " ";
+    for (int i = 0; i < length; i++){
+        if (i == length-1){
+            cout << lst[i];
+        } else {
+            cout << lst[i] << " ";
+        }
     }
-    cout << lst[length-1] << endl;
+    cout << endl;
 }
 
 template <class T_Type>
@@ -195,3 +199,4 @@ Set<T_Type> Set<T_Type>::operator*(const Set &s) const {
     delete[] buf;
     return result;
 }
+
